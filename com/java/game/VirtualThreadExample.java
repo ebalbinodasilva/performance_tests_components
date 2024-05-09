@@ -1,5 +1,8 @@
 package com.java.game;
 
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +26,11 @@ public class VirtualThreadExample {
                 System.out.println("Tarefa " + taskId + " concluída");
             });
         }
+        System.out.println("Uso de memória após aguardar as threads:");
         printMemoryUsage();
+
+        System.out.println("Informações sobre Garbage Collector após aguardar as threads:");
+        printGarbageCollectorUsage();
 
         // Fechar o executor após a conclusão de todas as tarefas
         executor.shutdown();
@@ -48,4 +55,14 @@ public class VirtualThreadExample {
         System.out.println("Memória livre: " + freeMemory / (1024 * 1024) + " MB");
         System.out.println("Memória máxima: " + maxMemory / (1024 * 1024) + " MB");
     }
+
+    public static void printGarbageCollectorUsage() {
+        List<GarbageCollectorMXBean> gcs = ManagementFactory.getGarbageCollectorMXBeans();
+        for (GarbageCollectorMXBean gc : gcs) {
+            System.out.println("Garbage Collector: " + gc.getName());
+            System.out.println(" - Total de coletas: " + gc.getCollectionCount());
+            System.out.println(" - Tempo total de coleta: " + gc.getCollectionTime() + " ms");
+        }
+    }
 }
+

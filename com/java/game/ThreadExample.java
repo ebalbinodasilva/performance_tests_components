@@ -1,5 +1,10 @@
 package com.java.game;
 
+
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.util.List;
+
 public class ThreadExample {
     static class WorkerTask implements Runnable {
         private final int taskId;
@@ -42,8 +47,11 @@ public class ThreadExample {
             threads[i].start(); // Iniciar a thread
         }
 
-        System.out.println("Uso de memória antes de aguardar as threads:");
+        System.out.println("Uso de memória após aguardar as threads:");
         printMemoryUsage();
+
+        System.out.println("Informações sobre Garbage Collector após aguardar as threads:");
+        printGarbageCollectorUsage();
 
         // Aguarda todas as threads terminarem
         for (Thread thread : threads) {
@@ -56,5 +64,14 @@ public class ThreadExample {
         }
 
         System.out.println("Todas as tarefas foram concluídas.");
+    }
+
+    public static void printGarbageCollectorUsage() {
+        List<GarbageCollectorMXBean> gcs = ManagementFactory.getGarbageCollectorMXBeans();
+        for (GarbageCollectorMXBean gc : gcs) {
+            System.out.println("Garbage Collector: " + gc.getName());
+            System.out.println(" - Total de coletas: " + gc.getCollectionCount());
+            System.out.println(" - Tempo total de coleta: " + gc.getCollectionTime() + " ms");
+        }
     }
 }
