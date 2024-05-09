@@ -21,6 +21,16 @@ public class ThreadExample {
             System.out.println("Tarefa " + taskId + " concluída na thread: " + Thread.currentThread().getName());
         }
     }
+    public static void printMemoryUsage() {
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory(); // Memória total alocada para a JVM
+        long freeMemory = runtime.freeMemory();  // Memória livre disponível
+        long maxMemory = runtime.maxMemory();   // Memória máxima que a JVM pode usar
+
+        System.out.println("Memória total: " + totalMemory / (1024 * 1024) + " MB");
+        System.out.println("Memória livre: " + freeMemory / (1024 * 1024) + " MB");
+        System.out.println("Memória máxima: " + maxMemory / (1024 * 1024) + " MB");
+    }
 
     public static void main(String[] args) {
         // Criar e iniciar várias threads para executar tarefas concorrentes
@@ -31,6 +41,9 @@ public class ThreadExample {
             threads[i] = new Thread(new WorkerTask(i));
             threads[i].start(); // Iniciar a thread
         }
+
+        System.out.println("Uso de memória antes de aguardar as threads:");
+        printMemoryUsage();
 
         // Aguarda todas as threads terminarem
         for (Thread thread : threads) {

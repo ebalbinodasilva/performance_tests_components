@@ -23,6 +23,7 @@ public class VirtualThreadExample {
                 System.out.println("Tarefa " + taskId + " concluída");
             });
         }
+        printMemoryUsage();
 
         // Fechar o executor após a conclusão de todas as tarefas
         executor.shutdown();
@@ -36,5 +37,15 @@ public class VirtualThreadExample {
             Thread.currentThread().interrupt();
             System.err.println("Aguardando interrupção");
         }
+    }
+    public static void printMemoryUsage() {
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory(); // Memória total alocada para a JVM
+        long freeMemory = runtime.freeMemory();  // Memória livre disponível
+        long maxMemory = runtime.maxMemory();   // Memória máxima que a JVM pode usar
+
+        System.out.println("Memória total: " + totalMemory / (1024 * 1024) + " MB");
+        System.out.println("Memória livre: " + freeMemory / (1024 * 1024) + " MB");
+        System.out.println("Memória máxima: " + maxMemory / (1024 * 1024) + " MB");
     }
 }
